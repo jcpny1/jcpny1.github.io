@@ -1,0 +1,21 @@
+# Site settings
+title: Making The Move
+header-img: img/home-bg.png
+email: jpfingst@outlook.com
+copyright_name: jcpny1
+description: > # this means to ignore newlines until "baseurl:"
+  From proprietary back end software coding to web developer!
+baseurl: "" # the subpath of your site, e.g. /blog
+twitter_username: 
+github_username:  jcpny1
+learn_profile: jcpny1
+email_username: jpfingst@outlook.com
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+paginate: 5
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+
+gems: [jekyll-paginate, jekyll-feed]
