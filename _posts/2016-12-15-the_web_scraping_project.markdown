@@ -12,11 +12,11 @@ My concept was that a listing could be selling anything and that various subclas
 
 I won’t bore you with all the details, but will say that scraping more than just trivial data elements is a very tedious endeavor. I suspect the designers of these sites did not take ease-of-scraping effort into consideration when they designed the HTML output `</sarcasm>`.
 
-### LESSONS LEARNED
-### *Fragility*
+# LESSONS LEARNED
+# *Fragility*
 Scraping code is very fragile. Except for cases where your data is tied directly to a specific CSS selector, e.g. `<span class = ”price” > $10,000 </span>`, your code will be very specific to how the data is laid out. For example, `<h1>2017 Cadillac Escalade in 4339 Hempstead Turnpike, Farmingdale, New York 11735 </h1>`. If your parsing data elements from that string in it's particular position in the document, and the site makes any changes to the format, your code will likely break. If your broken code causes an exception, at least you’ll know when it’s broken. If it fails silently, you may not know that you’re not getting the all data you are counting on getting. If you’re performing metrics on incomplete data, you’ll have wrong answers. On the plus side, it is a way to get a large amount of real-world data into your program for other purposes (such as POC, class design, etc.) that would be impractical to enter by hand.
 
-### *Namespaces*
+# *Namespaces*
 My project didn’t seem to lend itself to needing its own namespace, but I thought it would be a good thing to do as I was going to package it as a gem. So I went and added `Classified::` to all my class definitions. This was a simpler notation then putting `module Classified` verbiage in each class file and indenting the contents.
 
 At that point, Ruby starting requiring that I qualify all my class references with that namespace name, even though all my classes were in the same namespace. That was a real nuisance. Later, I discovered that wouldn’t have been necessary if I had used the `module Classified` method instead.
