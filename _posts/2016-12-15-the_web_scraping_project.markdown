@@ -22,7 +22,9 @@ My project didn’t seem to lend itself to needing its own namespace, but I thou
 At that point, Ruby starting requiring that I qualify all my class references with that namespace name, even though all my classes were in the same namespace. That was a real nuisance. Later, I discovered that wouldn’t have been necessary if I had used the `module Classified` method instead.
 
 ### *The CLI*
-Coding even a less-than-robust command line interface from scratch is not fun. Although I originally learned coding in a Unix environment, and am no stranger to some arcane tools like `sed`, `grep`, `yacc`, and `awk`, doing an old-timey CLI for a data analysis app was a quite a throwback to yesteryear. I gained a new appreciation for GUI-based apps. Using #gets to input a string was a little odd. If I typed 123, but meant to type 456, and therefore backspaced, this is what the line looked like: 123\321/456. I searched online and found a way to prevent that, but didn’t have the will to implement it.
+Coding even a less-than-robust command line interface from scratch is not fun. A lot of time was spent formatting data elements for a decent looking display. (I gained a new appreciation for GUI-based apps.)
+
+Using #gets to input a string was a little odd. If I typed 123, but meant to type 456, and therefore backspaced, this is what the line looked like: 123\321/456. I searched online and found a way to prevent that, but didn’t have the will to implement it.
 
 ### *Ruby Coding*
 This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the step enumerato and the ‘…’ range operator, were an important learning experience.
