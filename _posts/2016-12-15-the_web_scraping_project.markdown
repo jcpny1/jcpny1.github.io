@@ -10,7 +10,7 @@ I first did a quick survey of several classified websites, like my local newspap
 
 My concept was that a listing could be selling anything and that various subclasses would handle the attribute differences between a boat and a car, for instance. By scraping a boats-for-sale website and a cars-for-sale website, I was going to get vastly different website data than if I had chosen a single website that offered both. By scraping both, I would also be able to prove out a class design that could, in the future, effectively handle any type of item with minimal incremental effort.
 
-I won’t bore you with all the details, but will say that scraping more than just trivial data elements is a very tedious endeavor. I suspect the designers of these sites did not take ease-of-scraping effort into consideration when they designed the HTML output </sarcasm>.
+I won’t bore you with all the details, but will say that scraping more than just trivial data elements is a very tedious endeavor. I suspect the designers of these sites did not take ease-of-scraping effort into consideration when they designed the HTML output `</sarcasm>`.
 
 ### LESSONS LEARNED
 ### *Fragility*
