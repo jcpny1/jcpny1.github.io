@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Web Scraping Project"
-date:   2016-12-15 04:38:17 +0000
+date:   2016-12-14 23:38:17 -0500
 ---
 
 This is first do-it-yourself from scratch Ruby coding project. The previous projects were kind of paint-by-numbers, where you’re completing a part of an existing project or being guided as to what to create. As well as having a fairly complete test suite your code must pass. This project had none of that, except a brief description of what the project needed to accomplish. In this case, to get some public listing-type data from a website of your choosing, place that data in well thought out objects, display it in a summary fashion, and provide the ability to select an items for a detailed view. For my project, I chose to use classified ads.
@@ -12,23 +12,24 @@ My concept was that a listing could be selling anything and that various subclas
 
 I won’t bore you with all the details, but will say that scraping more than just trivial data elements is a very tedious endeavor. I suspect the designers of these sites did not take ease-of-scraping effort into consideration when they designed the HTML output </sarcasm>.
 
-## Lessons learned:
+# Lessons learned:
 
-### Fragility
+## Fragility
 Scraping code is very fragile. Except for cases where your data is tied directly to a specific CSS selector, e.g. <span class = ”price” > $10,000 </span>, your code will be very specific to how the data is laid out. For example, <h1>2017 Cadillac Escalade in 4339 Hempstead Turnpike, Farmingdale, New York 11735 </h1>. If your parsing data elements from that string in it's particular position in the document, and the site makes any changes to the format, your code will likely break. If your broken code causes an exception, at least you’ll know when it’s broken. If it fails silently, you may not know that you’re not getting the all data you are counting on getting. If you’re performing metrics on incomplete data, you’ll have wrong answers. On the plus side, it is a way to get a large amount of real-world data into your program for other purposes (such as POC, class design, etc.) that would be impractical to enter by hand.
 
-### Namespaces
+## Namespaces
 My project didn’t seem to lend itself to needing its own namespace, but I thought it would be a good thing to do as I was going to package it as a gem. So I went and added Classified:: to all my class definitions. This was a simpler notation then putting ‘module Classified’ verbiage in each class file and indenting the contents.
 
 At that point, Ruby starting requiring that I qualify all my class references with that namespace name, even though all my classes were in the same namespace. That was a real nuisance. Later, I discovered that wouldn’t have been necessary if I had used the ‘module Classified’ method instead.
 
-### The CLI
+## The CLI
 Coding even a less-than-robust command line interface from scratch is not fun. Although I originally learned coding in a Unix environment, and am no stranger to some arcane tools like sed, grep, yacc, and awk, doing an old-timey CLI for a data analysis app was a quite a throwback to yesteryear. I gained a new appreciation for GUI-based apps. Using #gets to input a string was a little odd. If I typed 123, but meant to type 456, and therefore backspaced, this is what the line looked like: 123\321/456. I searched online and found a way to prevent that, but didn’t have the will to implement it.
 
-### Ruby Coding
+## Ruby Coding
 This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the step enumerato and the ‘…’ range operator, were an important learning experience.
 
 **Replacing**
+
 ```ruby
         index = 0
         while (index < dl_tag.size)
@@ -36,6 +37,7 @@ This project had enough functionality that I was able to get a lot of practice w
         end
 ```
 **with**
+
 ```ruby
         (0...dl_tag.size).step(2) { |index| }
 ```
