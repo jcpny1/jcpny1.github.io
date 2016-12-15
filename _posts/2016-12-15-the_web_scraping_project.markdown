@@ -1,0 +1,42 @@
+---
+layout: post
+title:  "The Web Scraping Project"
+date:   2016-12-15 04:38:17 +0000
+---
+
+This is first do-it-yourself from scratch Ruby coding project. The previous projects were kind of paint-by-numbers, where you’re completing a part of an existing project or being guided as to what to create. As well as having a fairly complete test suite your code must pass. This project had none of that, except a brief description of what the project needed to accomplish. In this case, to get some public listing-type data from a website of your choosing, place that data in well thought out objects, display it in a summary fashion, and provide the ability to select an items for a detailed view. For my project, I chose to use classified ads.
+
+I first did a quick survey of several classified websites, like my local newspaper, autotrader.com, and kbb.com. What I quickly discovered was, that although the websites presented an orderly view of a wealth of information, under the covers, things were a lot different. Each website had some HTML that was very well defined and some HTML that poorly tagged or well ordered. I tried to find a website that had very specific tags for the data types I was looking for. For example, one website would have a Price class for the sale price of an item, but then use free-form text in generic header tags for other things, like vehicle’s make and model. Some would have the word make or model in the free-form text and others wouldn’t. In the end, I found no website that did it all. So I just picked two and forged ahead.
+
+My concept was that a listing could be selling anything and that various subclasses would handle the attribute differences between a boat and a car, for instance. By scraping a boats-for-sale website and a cars-for-sale website, I was going to get vastly different website data than if I had chosen a single website that offered both. By scraping both, I would also be able to prove out a class design that could, in the future, effectively handle any type of item with minimal incremental effort.
+
+I won’t bore you with all the details, but will say that scraping more than just trivial data elements is a very tedious endeavor. I suspect the designers of these sites did not take ease-of-scraping effort into consideration when they designed the HTML output </sarcasm>.
+
+## Lessons learned:
+
+### Fragility
+Scraping code is very fragile. Except for cases where your data is tied directly to a specific CSS selector, e.g. <span class = ”price” > $10,000 </span>, your code will be very specific to how the data is laid out. For example, <h1>2017 Cadillac Escalade in 4339 Hempstead Turnpike, Farmingdale, New York 11735 </h1>. If your parsing data elements from that string in it's particular position in the document, and the site makes any changes to the format, your code will likely break. If your broken code causes an exception, at least you’ll know when it’s broken. If it fails silently, you may not know that you’re not getting the all data you are counting on getting. If you’re performing metrics on incomplete data, you’ll have wrong answers. On the plus side, it is a way to get a large amount of real-world data into your program for other purposes (such as POC, class design, etc.) that would be impractical to enter by hand.
+
+### Namespaces
+My project didn’t seem to lend itself to needing its own namespace, but I thought it would be a good thing to do as I was going to package it as a gem. So I went and added Classified:: to all my class definitions. This was a simpler notation then putting ‘module Classified’ verbiage in each class file and indenting the contents.
+
+At that point, Ruby starting requiring that I qualify all my class references with that namespace name, even though all my classes were in the same namespace. That was a real nuisance. Later, I discovered that wouldn’t have been necessary if I had used the ‘module Classified’ method instead.
+
+### The CLI
+Coding even a less-than-robust command line interface from scratch is not fun. Although I originally learned coding in a Unix environment, and am no stranger to some arcane tools like sed, grep, yacc, and awk, doing an old-timey CLI for a data analysis app was a quite a throwback to yesteryear. I gained a new appreciation for GUI-based apps. Using #gets to input a string was a little odd. If I typed 123, but meant to type 456, and therefore backspaced, this is what the line looked like: 123\321/456. I searched online and found a way to prevent that, but didn’t have the will to implement it.
+
+### Ruby Coding
+This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the step enumerato and the ‘…’ range operator, were an important learning experience.
+
+**Replacing**
+```ruby
+        index = 0
+        while (index < dl_tag.size)
+	         index += 2
+        end
+```
+**with**
+```ruby
+        (0...dl_tag.size).step(2) { |index| }
+```
+
