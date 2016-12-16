@@ -10,7 +10,7 @@ I first did a quick survey of several classified websites, like my local newspap
 
 My concept was that a listing could be selling anything and that various subclasses would handle the attribute differences between a boat and a car, for instance. By scraping a boats-for-sale website and a cars-for-sale website, I was going to get vastly different website data than if I had chosen a single website that offered both. By scraping both, I would also be able to prove out a class design that could, in the future, effectively handle any type of item with minimal incremental effort.
 
-I won’t bore you with all the details, but will say that scraping more than just trivial data elements is a very tedious endeavor. I suspect the designers of these sites did not take the ease-of-scraping effort into consideration when they designed the HTML output `</sarcasm>`.
+I won’t bore you with all the details, but will say that scraping more than just trivial data elements is a very tedious endeavor. I suspect the designers of these sites did not take the ease-of-scraping effort into consideration when they designed the HTML output </sarcasm>.
 
 The following paragraphs describe some of the lessons learned -
 
@@ -28,7 +28,7 @@ Coding even a less-than-robust command line interface from scratch is not fun. A
 Using `#gets` to input a string was a little odd. If I typed `123`, but meant to type `456`, and therefore backspaced, this is how the line appeared on screen: `123\321/456`. I searched online and found a way to prevent this, but didn’t have the will to implement it.
 
 ### *Ruby Coding*
-This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the step enumerator and the ‘…’ range operator, were an important learning experience.
+This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the `step` enumerator and the `‘…’` range operator, were an important learning experience.
 
 * Replaced
 
@@ -44,5 +44,5 @@ This project had enough functionality that I was able to get a lot of practice w
         (0...dl_tag.size).step(2) { |index| }
 ```
 
-I also found that I need to learn how to use a Ruby debugger that I can use to step through code. Pry is nice, but to keep moving the pry call while not being able to step through the code is a real time sink. Also, calling pry inside a major loop is not a great idea. It might get hit a hundred times, when all I wanted was once or twice. Ruby -rdebug looks too crude to be a lot of help. Perhaps there's something better out there. I'll have to investigate.
+I also found that I need to learn how to use a Ruby debugger that I can use to step through code. Pry is nice, but to keep moving the pry call while not being able to step through the code is a real time sink. Also, calling pry inside a major loop is not a great idea. It might get hit a hundred times, when all I wanted was once or twice. Ruby `-rdebug` looks too crude to be a lot of help. Perhaps there's something better out there. I'll have to investigate.
 
