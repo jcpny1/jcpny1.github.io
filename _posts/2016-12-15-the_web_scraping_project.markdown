@@ -29,7 +29,7 @@ Using `#gets` to input a string was a little odd. If I typed 123, but meant to t
 ### *Ruby Coding*
 This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the step enumerato and the ‘…’ range operator, were an important learning experience.
 
-* Replacing
+* Replaced
 
 ```ruby
         index = 0
