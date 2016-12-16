@@ -28,14 +28,14 @@ Coding even a less-than-robust command line interface from scratch is not fun. A
 Using `#gets` to input a string was a little odd. If I typed `123`, but meant to type `456`, and therefore backspaced, this is how the line appeared on screen: `123\321/456`. I searched online and found a way to prevent this, but didn’t have the will to implement it.
 
 ### *Ruby Coding*
-This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the `step` enumerator and the `‘…’` range operator, were an important learning experience.
+This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the `step` enumerator and the ‘`…`’ range operator, were an important learning experience.
 
 * Replaced
 
 ```ruby
         index = 0
         while (index < dl_tag.size)
-           index += 2
+          index += 2
         end
 ```
 * with
