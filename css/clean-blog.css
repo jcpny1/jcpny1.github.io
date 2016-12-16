@@ -16,7 +16,6 @@ p {
 p a {
   text-decoration: underline;
 }
-/*
 h1,
 h2,
 h3,
@@ -30,7 +29,6 @@ h6.powered_by {
   font-size: 13px;
   margin-top: 0px;
 }
-*/
 a {
   color: #404040;
 }
@@ -439,26 +437,4 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-/* BEGIN CHANGES JCP 12/15/2016 */
-h1,
-.h1
-{
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-h2,
-.h2
- {
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-h3,
-.h3 {
-  margin-top: 0px;
-  margin-bottom: 10px;
-}
-p {
-  margin-top: 0px;
-  margin-bottom: 20px;
 }
