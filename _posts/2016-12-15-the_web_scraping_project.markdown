@@ -25,7 +25,7 @@ At that point, Ruby starting requiring that I qualify all my class references wi
 ### *The CLI*
 Coding even a less-than-robust command line interface from scratch is not fun. A lot of time was spent formatting data elements for a decent looking display. (I gained a new appreciation for GUI-based apps.)
 
-Using `#gets` to input a string was a little odd. If I typed 123, but meant to type 456, and therefore backspaced, this is what the line looked like: 123\321/456. I searched online and found a way to prevent that, but didn’t have the will to implement it.
+Using `#gets` to input a string was a little odd. If I typed `123`, but meant to type `456`, and therefore backspaced, this is how the line appeared on screen: `123\321/456`. I searched online and found a way to prevent this, but didn’t have the will to implement it.
 
 ### *Ruby Coding*
 This project had enough functionality that I was able to get a lot of practice with Ruby. I also did quite a bit of web browsing finding better ways to do things that I had been doing in a very non-Ruby way. Even little things, like using the step enumerator and the ‘…’ range operator, were an important learning experience.
@@ -44,5 +44,5 @@ This project had enough functionality that I was able to get a lot of practice w
         (0...dl_tag.size).step(2) { |index| }
 ```
 
-I also found that I need to learn how to use a Ruby debugger that I can step through code with. Pry is nice, but to keep moving the pry call while not being able to step through the code is a real time sink. Also, calling pry inside a major loop is not a great idea. It might get hit a hundred times, when all I wanted was once or twice. Ruby -rdebug looks too crude to be a lot of help. Perhaps there's something better than what was around in 1983 (sdb). I'll have to investigate.
+I also found that I need to learn how to use a Ruby debugger that I can use to step through code. Pry is nice, but to keep moving the pry call while not being able to step through the code is a real time sink. Also, calling pry inside a major loop is not a great idea. It might get hit a hundred times, when all I wanted was once or twice. Ruby -rdebug looks too crude to be a lot of help. Perhaps there's something better out there. I'll have to investigate.
 
