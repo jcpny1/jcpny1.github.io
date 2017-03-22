@@ -4,7 +4,7 @@ title:  "The Sinatra CMS Project"
 date:   2017-03-08 18:56:54 +0000
 ---
 
-This is the first comprehensive Sinatra coding project. It brings together Ruby, Sinatra, ActiveRecord, and a little HTML. The assignment is to design and implement a basic CRUD application. It needs to include a one-to-many relationship between two of the data models.
+This is the first comprehensive Sinatra coding project of the bootcamp. It brings together Ruby, Sinatra, ActiveRecord, and a little HTML. The assignment is to design and implement a basic CRUD application. It needs to include a one-to-many relationship between two of the data models.
 
 Once I picked a domain and created a rough design (modeling merchandise purchases), the database setup was complete in short order. I created some seed data so I'd have some data to work with quickly while setting up views and routes. Where things started to get bogged down, was when I decided to spruce up the html a bit. That's a process that I find seems to have no end - You eventually have to stop fiddling with the code and convince yourself that good enough is good enough!
 
