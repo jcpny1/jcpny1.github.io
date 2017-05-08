@@ -4,7 +4,7 @@ title:  "The Rails Portfolio Project"
 date:   2017-05-08 11:25:55 -0400
 ---
 
-This is the first do-it-yourself from scratch Rails coding project. The previous projects were kind of paint-by-the-numbers, where you’re completing a part of an existing project or being guided as to what to create. This project had a brief description of what the project needed to accomplish [Rails Assessment](https://learn.co/lessons/rails-assessment). For my project, I chose to develop a recipe catalog application.
+This is the first do-it-yourself from scratch Rails coding project. The previous projects were kind of paint-by-the-numbers, where you’re completing a part of an existing project or being guided as to what to create. This project had a brief description of what the project needed to satify the [Rails Assessment](https://learn.co/lessons/rails-assessment) requirements. For my project, I chose to develop a recipe catalog application.
 
 I first did a quick survey of several recipe websites to get an idea of the kind of data that is maintained for recipes. I then came up with the data model.
 
