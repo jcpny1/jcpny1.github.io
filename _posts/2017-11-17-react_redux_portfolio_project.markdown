@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "React Redux Portfolio Project"
-date:       2017-11-17 20:09:30 +0000
+date:       2017-11-17 15:09:31 -0500
 permalink:  react_redux_portfolio_project
 ---
 
@@ -30,7 +30,9 @@ After some poking around, and finding a lot of outdated information, I came acro
 I spent about a week crafting the Rails methods.
 After many years of continuous service, and just as I wrapped up the coding, the service began returning this message to any API request:
 ```
-It has come to our attention that this service is being used in violation of the Yahoo Terms of Service. As such, the service is being discontinued. For all future markets and equities data research, please refer to finance.yahoo.com.
+It has come to our attention that this service is being used in violation of the Yahoo Terms of Service.
+As such, the service is being discontinued.
+For all future markets and equities data research, please refer to finance.yahoo.com.
 ```
 No more quotes!
 Proving the old adage, you get what you pay for.
