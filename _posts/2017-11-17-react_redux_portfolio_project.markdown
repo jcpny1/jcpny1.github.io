@@ -13,6 +13,7 @@ More than would be needed to satisfy this project’s requirements, and would ta
 So, I focused on getting and saving a user’s portfolio and applying current market prices to come up with current value and gain/loss amounts.
 
 <img src='https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-13%20StockAnalyzer.png?raw=true' alt='Stock-Analyzer Screenshot' title='Stock-Analyzer Screenshot' style='width:100%;'>
+
 ### *The Data Model*
 The data model is pretty straightforward.
 A user has one or more portolios, each of which contain positions.
@@ -20,6 +21,7 @@ Each position represents the holding of a single instrument.
 Each instrument has market data associated with it.
 
 <img src='https://github.com/jcpny1/stock-analyzer/blob/master/Stock%20Analyzer%20E-R%20Diagram.png?raw=true' alt='Stock-Analyzer E-R Diagram' title='Stock-Analyzer E-R Diagram' style='width:100%;'>
+
 ### *Market Data*
 I needed a way to create realistic stock prices for the entered positions;
 Preferably one that used a publish-subscribe model.
@@ -30,9 +32,9 @@ After some poking around, and finding a lot of outdated information, I came acro
 I spent about a week crafting the Rails methods.
 After many years of continuous service, and just as I wrapped up the coding, the service began returning this message to any API request:
 ```
-It has come to our attention that this service is being used in violation of the Yahoo
-Terms of Service. As such, the service is being discontinued. For all future markets
-and equities data research, please refer to finance.yahoo.com.
+It has come to our attention that this service is being used in violation of the Yahoo Terms of
+Service. As such, the service is being discontinued. For all future markets and equities data
+research, please refer to finance.yahoo.com.
 ```
 No more quotes!
 Proving the old adage, you get what you pay for.
