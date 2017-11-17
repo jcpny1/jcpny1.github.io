@@ -44,15 +44,16 @@ So, I switched providers again and created a third data feed handler.
 Needless to say, this was a big time sink.
 The app, as it stands now, uses Investors Exchange for market data, Alpha Vantage for the Dow Jones Industrial Average, and NewsAPI for headline news.
 I would have preferred feeds that work off CUSIP or ISIN codes instead of symbols, but none were available (for free, that is).
-Once I was effectively communicating with the market data provider’s API, I realized I needed to cache the latest prices on my end in the event the data feed was not available.
-If the feed was down, my app would not work.
+Once I was effectively communicating with the market data provider’s API, I realized that my app wouldn't do anything usefule if the data feed was down.
+### *Market Data*
+I needed to cache the latest prices on my end in the event the data feed was not available, so the user would at least have some prices to work with, if not the latest ones.
 Rather than create my own cache service, I used sqlite3 to maintain the latest prices for any equity in a user’s portfolio.
-This way, if the feed was down, the user would at least have some prices to work with, if not the latest ones.
 I then set out to create seed data for the database.
-The data vendor provides information on about 9,000 instruments.
+Again, to have something to work with if the live feed were not available.
+The market data vendor provides information on about 9,000 instruments.
 When I used this data for seeding, it took hours to load and created a database of about 200MB.
 Not ideal.
-So, I trimmed the seed data down to a handful of instruments and data and provided an option in the app to fetch additional data, if desired.
+So, I trimmed the seed data down to a handful of instruments and prices (at about 30KB) and provided an option in the app to fetch additional data, if desired.
 ### *Creating multi-page apps using Redux*
 I created several container components, each having their own information in the application’s state.
 When the user hits the browser’s refresh, the entire state is wiped out, unbeknownst to the components that are not presently displayed.
