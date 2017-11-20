@@ -45,11 +45,13 @@ Needless to say, this was a big time sink.
 The app, as it stands now, uses Investors Exchange for market data, Alpha Vantage for the Dow Jones Industrial Average, and NewsAPI for headline news.
 I would have preferred feeds that work off CUSIP or ISIN codes instead of symbols, but none were available (for free, that is).
 Once I was effectively communicating with the market data provider’s API, I realized that my app wouldn't do anything usefule if the data feed was down.
-### *Market Data*
-I needed to cache the latest prices on my end in the event the data feed was not available, so the user would at least have some prices to work with, if not the latest ones.
-Rather than create my own cache service, I used sqlite3 to maintain the latest prices for any equity in a user’s portfolio.
+### *Data Caching*
+I wanted to cache the latest prices on the server in the event the data feed was not available.
+That way, the user would at least have some prices to work with, if not the latest ones.
+Rather than create my own cache service, I used sqlite3 to maintain the latest prices.
 I then set out to create seed data for the database.
 Again, to have something to work with if the live feed were not available.
+### *Seed Data*
 The market data vendor provides information on about 9,000 instruments.
 When I used this data for seeding, it took hours to load and created a database of about 200MB.
 Not ideal.
@@ -69,6 +71,15 @@ With my own transactions, there is just one begin transaction and one commit.
 This technique can’t be used in all situations, but in this case, it worked great.
 A more advanced database manager would allow for bulk inserts.
 That would surely improve performance even more.
+### *Long Running Requests*
+Loading pricing data for all 9,000 instruments takes about x minutes (throttled to no more than 50 instruments per second).
+After two minutes, the HTTP request was reissued.
+This caused another load to start up.
+I suspect the retry must be part of Rails HTTP protocol.
+The retry requests weren't showing up in the browser's WebConsole network tab.
+After another two minutes, another request was sent.
+Now, three load requests were active!
+At this point, I moved long running requests to SideKiq, to be run in the background, while sending the client a response immediately.
 ### *Using a UI framework*
 I used semantic-ui-react for this application.
 It comes with a lot of functionality and styling.
