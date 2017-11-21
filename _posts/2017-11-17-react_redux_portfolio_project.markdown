@@ -1,6 +1,6 @@
 ---
 layout: post
-title:      "React Redux Portfolio Project"
+title:      "The React Redux Portfolio Project"
 date:       2017-11-17 15:09:31 -0500
 permalink:  react_redux_portfolio_project
 ---
@@ -53,7 +53,7 @@ I then set out to create seed data for the database.
 Again, to have something to work with if the live feed were not available.
 ### *Seed Data*
 The market data vendor provides information on about 9,000 instruments.
-When I used this data for seeding, it took hours to load and created a database of about 200MB.
+When I used this data for seeding, it created a seed file of about 200MB that took hours to load.
 Not ideal.
 So, I trimmed the seed data down to a handful of instruments and prices (at about 30KB) and provided an option in the app to fetch additional data, if desired.
 ### *Creating multi-page apps using Redux*
