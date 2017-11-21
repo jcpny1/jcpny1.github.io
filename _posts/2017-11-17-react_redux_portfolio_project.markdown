@@ -12,7 +12,7 @@ There’s a lot of functionality packed into those apps;
 More than would be needed to satisfy this project’s requirements, and would take a long time to build from scratch.
 So, I focused on getting and saving a user’s portfolio and applying current market prices to come up with current value and gain/loss amounts.
 
-<img src='https://github.com/jcpny1/stock-analyzer/blob/master/Screenshot-2017-11-13%20StockAnalyzer.png?raw=true' alt='Stock-Analyzer Screenshot' title='Stock-Analyzer Screenshot' style='width:100%;'>
+<img src='https://github.com/jcpny1/portfolio-analyzer/blob/master/Screenshot-2017-11-13%20StockAnalyzer.png?raw=true' alt='Stock-Analyzer Screenshot' title='Stock-Analyzer Screenshot' style='width:100%;'>
 
 ### *The Data Model*
 The data model is pretty straightforward.
@@ -20,7 +20,7 @@ A user has one or more portolios, each of which contain positions.
 Each position represents the holding of a single instrument.
 Each instrument has market data associated with it.
 
-<img src='https://github.com/jcpny1/stock-analyzer/blob/master/Stock%20Analyzer%20E-R%20Diagram.png?raw=true' alt='Stock-Analyzer E-R Diagram' title='Stock-Analyzer E-R Diagram' style='width:100%;'>
+<img src='https://github.com/jcpny1/portfolio-analyzer/blob/master/Stock%20Analyzer%20E-R%20Diagram.png?raw=true' alt='Stock-Analyzer E-R Diagram' title='Stock-Analyzer E-R Diagram' style='width:100%;'>
 
 ### *Market Data*
 I needed a way to create realistic stock prices for the entered positions;
