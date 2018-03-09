@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "Using Database Transactions"
-date:       2018-03-09 02:02:58 +0000
+date:       2018-03-08 21:02:58 -0500
 permalink:  using_database_transactions
 ---
 
@@ -24,7 +24,7 @@ For one of my projects, I needed to update equity prices in an 9,000 row SQLite 
 Updating 9,000 rows, each in their own transaction took 30 minutes and put a substantial strain on the database. As well as starving other users of the database from speedy access.
 
 ### * The Solution*
-By using the Begin and End transaction statements, I could cause all my update statements to execute within a single transaction. This cuts down substantially on overhead. The time to update 9,000 records fell from 30 minutes to 30 seconds. In ActiveRecord, the process looks something like this -
+By using the Begin and End transaction statements, I could cause all my update statements to execute within a single transaction. This cuts down substantially on overhead. The time to update 9,000 records fell from 30 minutes to 30 seconds. In [ActiveRecord](http://api.rubyonrails.org/v5.0/classes/ActiveRecord/Transactions/ClassMethods.html), the process looks something like this -
 
 ```
 Trade.transaction do
@@ -38,6 +38,5 @@ end
 Using this method, all the updates will fail if only one update fails.  For this project, that wasn't a problem. The updates were fairly simple and should not fail unless there were some major database problem or if the app crashed. In that case, restarting would not be a problem. In the checking account transfer example given earlier, if we were to batch multiple account's transfers into a single transaction, we would need to provide a way to restart the updates while excluding the failing updates. Unless this was needed to yield acceptable performance, for code simplicity's sake, it would be best to have just the statements for a single account in a single transaction.
 
 ### *Conclusion*
-Database software packages tend to have their own way of dealing with large or long running transactions in terms of locking, rollback log utilization, mulituse concurrency, etc. So, it pays to read up on the particulars of the package you will be using.
-
+Database software packages (MySQL, Postgres, SQLite, etc.) tend to have their own way of dealing with large or long running transactions in terms of locking, rolling back, mulituser concurrency, etc. So, it pays to read up on the particulars of the package you will be using.
 
