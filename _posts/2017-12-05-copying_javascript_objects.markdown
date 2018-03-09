@@ -26,10 +26,13 @@ However, when one is focused on the bigger challenges of crafting an app, it’s
 ```
         var copy = Object.assign({}, obj);
 ```
-        or
+
+or
+
 ```
         var copy = {…obj};
 ```
+
 #### *Class-aware Example*
 Researching further on the internet, produced this example as a solution:
 ```
