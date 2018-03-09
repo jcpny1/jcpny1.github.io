@@ -5,6 +5,7 @@ date:       2017-12-05 11:28:18 -0500
 permalink:  copying_javascript_objects
 ---
 
+
 My latest portfolio project centered around the use of React and Redux.
 Maintaining state using these libraries involves plenty of object copying.
 The state provided to the app is meant to be read-only.
