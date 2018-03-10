@@ -20,7 +20,7 @@ A transaction incurs substantial overhead - transaction setup, recording the int
 For one of my projects, I needed to update equity prices in an 9,000 row SQLite database table. This was done in a background process using SideKiq. For each equity price received from a third-party market data provider, I would perform an update statement to a row in that table if the price had changed from what was already stored.
 
 Updating 9,000 rows, each in their own transaction took 30 minutes and put a substantial strain on the database. As well as starving other users of the database from speedy access.
-### * The Solution*
+### *The Solution*
 By using the Begin and End transaction statements, I could cause all my update statements to execute within a single transaction. This cuts down substantially on overhead. The time to update 9,000 records fell from 30 minutes to 30 seconds. Or, from 5 inserts per second to 300!
 
 In [ActiveRecord](http://api.rubyonrails.org/v5.0/classes/ActiveRecord/Transactions/ClassMethods.html), the process looks something like this -
