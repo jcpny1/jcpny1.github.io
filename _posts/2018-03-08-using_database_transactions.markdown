@@ -29,7 +29,7 @@ In [ActiveRecord](http://api.rubyonrails.org/v5.0/classes/ActiveRecord/Transacti
 Trade.transaction do
   trades.each do |trade|
     *some processing here*
-	trade.save
+trade.save
   end
 end
 ```
