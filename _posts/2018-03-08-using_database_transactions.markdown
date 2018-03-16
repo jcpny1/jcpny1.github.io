@@ -7,7 +7,7 @@ permalink:  using_database_transactions
 
 
 When we use SQL, we are using database transactions. By default, every SQL statement (select, insert, update, etc.) executes within its own transaction. A transaction incurs a lot of overhead. When we need to process lots of SQL statements at a time, our application's performance can suffer greatly.
-### Background
+### *Background*
 A database transaction represents a unit of work in a database. A transaction exhibits the [ACID](https://en.wikipedia.org/wiki/ACID) properties. For our discussion here, we'll focus on the atomic or 'all or nothing' property of a transaction. That is, all the work in a transaction must succeed or none will succeed, leaving the database in a consistent state. This propery is important, for example, when transferring money from a savings account to a checking account. 
 ```
 UPDATE savings  SET balance = balance - 100.0 WHERE account_id = 100
