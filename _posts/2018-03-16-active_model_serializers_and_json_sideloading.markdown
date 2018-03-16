@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "Active Model Serializers & JSON Sideloading"
-date:       2018-03-16 22:54:52 +0000
+date:       2018-03-16 18:54:53 -0400
 permalink:  active_model_serializers_and_json_sideloading
 ---
 
@@ -11,7 +11,7 @@ When your data model has nested associations, each association gets fully conver
 This can lead to a lot of duplicated data being serialized and transmitted.
 [Sideloading](https://github.com/rails-api/active_model_serializers/blob/0-10-stable/docs/general/adapters.md#include-option) repetitive association data is a way to reduce JSON payloads and improve response time.
 
-(Note: Sideloading with active_model_serializers requires the use of the jason_api serializer adapter ([Adapters](https://github.com/rails-api/active_model_serializers/blob/0-10-stable/docs/general/adapters.md)).
+(Note: Sideloading with active_model_serializers requires the use of the jason_api serializer adapter (see [Adapters](https://github.com/rails-api/active_model_serializers/blob/0-10-stable/docs/general/adapters.md)).
 The default serializer adapter does not support sideloading.)
 
 ### *The Problem*
