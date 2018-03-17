@@ -147,12 +147,12 @@ The modified controller and serializer code looks like this -
 ```
 def monthly_series
   series = DataCache.monthly_series(params[:symbols].split(','))
-  render json: series, include: 'instrument'
+  render json: series, each_serializer: SeriesSerializer, include: 'instrument'
 end
     
 class SeriesSerializer < ActiveModel::Serializer
   attributes :id, :time_interval, :series_date, :adjusted_close_price, :dividend_amount, :created_at, :error
-  belongs_to :instrument
+  has_one :instrument
 end
 ```
 Some overhead is added performing lookups in the `included` records, but that hit is more than offset by not serializing and transmitting so much unnecessary data.
