@@ -1,6 +1,6 @@
 ---
 layout: post
-title:      "ActiveRecord Preload"
+title:      "Active Record Preload"
 date:       2018-03-20 22:14:05 -0400
 permalink:  active_record_preload
 ---
@@ -9,12 +9,12 @@ permalink:  active_record_preload
 ### *Introduction*
 I have an app that retrieves 640 data points from a database (from the Series table) that are then rendered to JSON and sent to the client to be plotted on a chart.
 
-ActiveRecord assembles an object from one or more database records.
+Active Record assembles an object from one or more database records.
 Since the Series class includes the Instrument class, each Series object requires an Instrument object.
 
-Although I only make one ActiveRecord select call in my app, I noticed in the Rails server log that there were 640 database calls generated from that one ActiveRecord call!
+Although I only make one Active Record select call in my app, I noticed in the Rails server log that there were 640 database calls generated from that one Active Record call!
 
-Luckily, ActiveRecord provides a way to avoid these excessive database calls.
+Luckily, Active Record provides a way to avoid these excessive database calls.
 It's called preloading, aka [Eager Loading Associations](http://guides.rubyonrails.org/active_record_querying.html#eager-loading-associations).
 
 In the test case below, we are looking up Series data for 10 Instruments (by using the Instrument's symbol name, e.g., IBM).
@@ -27,11 +27,11 @@ All 640 Series records are retrieved in one Load call.
 However, for each Series record retrieved, there is 1 Instrument Load call, making for total of 641 database calls.
 
 [NOTE: There is some optimization present -
-Ten of the 640 Instrument Load calls result in an actual database lookup while the remaining 630 Instrument Load calls are satisfied by ActiveRecord's cache (denoted by the keyword CACHE in the console log), so no database call is performed.]
+Ten of the 640 Instrument Load calls result in an actual database lookup while the remaining 630 Instrument Load calls are satisfied by Active Record's cache (denoted by the keyword CACHE in the console log), so no database call is performed.]
 
-Normally, if we were making SQL calls ourselves, instead of through ActiveRecord, we would expect one Select statement to result in one database call.
+Normally, if we were making SQL calls ourselves, instead of through Active Record, we would expect one Select statement to result in one database call.
 
-Here is the ActiveRecord call without preloading -
+Here is the Active Record call without preloading -
 
 ```
 Series.joins(:intrument).where(instruments: {symbol: symbols}).distinct.order('instrument_id, time_interval, series_date')
