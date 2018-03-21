@@ -1,7 +1,7 @@
 ---
 layout: post
-title:      "ACTIVE RECORD PRELOAD"
-date:       2018-03-21 02:14:04 +0000
+title:      "ActiveRecord Preload"
+date:       2018-03-20 22:14:05 -0400
 permalink:  active_record_preload
 ---
 
