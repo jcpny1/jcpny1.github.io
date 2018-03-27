@@ -13,6 +13,7 @@ Active Record assembles an object from one or more database records.
 Since the Series class includes the Instrument class, each Series object requires an Instrument object.
 
 Although I only make one Active Record select call in my app, I noticed in the Rails server log that there were 640 database calls generated from that one Active Record call!
+Each instrument was retrieved 64 times, once for each of its data points.
 
 Luckily, Active Record provides a way to avoid these excessive database calls.
 It's called preloading, aka [Eager Loading Associations](http://guides.rubyonrails.org/active_record_querying.html#eager-loading-associations).
@@ -20,7 +21,8 @@ It's called preloading, aka [Eager Loading Associations](http://guides.rubyonrai
 In the test case below, we are looking up Series data for 10 Instruments (by using the Instrument's symbol name, e.g., IBM).
 Each of the 10 Instruments has 64 Series records, for a total of 640 Series records.
 
-By using preloading, I was able to reduce processing time in half.
+By using preloading, each instrument is just fetched once, regardless of how many data points it has.
+I was able to reduce processing time in half.
 
 ### *Without Preload*
 All 640 Series records are retrieved in one Load call.
