@@ -1,130 +1,154 @@
 ---
 layout: post
 title:      "Active Record SQL & Explain Plan"
-date:       2018-04-02 11:57:55 +0000
+date:       2018-04-02 07:57:56 -0400
 permalink:  active_record_sql_and_explain_plan
 ---
 
 
 ### *Introduction*
-I have an app that retrieves 640 data points from a database (from the Series table) that are then rendered to JSON and sent to the client to be plotted on a chart.
+I have an app that retrieves 640 data points from a Postgres database with a two-table join.
+The join was taking about 3 minutes to return results, so I decided to see if that could be improved.
+I examined the query plans and added a ```distinct``` clause to the query.
+This dropped the query response time from 3 minutes to less than 1 second.
+Active Record's [.explain](http://guides.rubyonrails.org/active_record_querying.html#running-explain) function is an excellent resource to help tune SQL performance.
+Explain will display your query's query execution plan.
+From there, you can tell whether or not the query is behaving as you expect.
+For instance, whether the query is taking advantage of available indexes.
 
-Active Record assembles an object from one or more database records.
-Since the Series class includes the Instrument class, each Series object requires an Instrument object.
+Sometimes, when the query does not appear to be optimal, there is a good reason for it.
+E.g., if using an index would take longer than just scanning the table.
+Other times, the query execution is not recognizing factors that would improve performance.
 
-Although I only make one Active Record select call in my app, I noticed in the Rails server log that there were 640 database calls generated from that one Active Record call!
-Each instrument was retrieved 64 times, once for each of its data points.
+Since Explain Plan is not a SQL standard, each database vendor has there own syntax for calling it.
+It appears that Active Record is able to convert the ```.explain``` call on your query to the explain plan syntax required by your particular database's vendor.
 
-Luckily, Active Record provides a way to avoid these excessive database calls.
-It's called preloading, aka [Eager Loading Associations](http://guides.rubyonrails.org/active_record_querying.html#eager-loading-associations).
+#### *The Data*
+The two tables are ```series``` and ```instruments```.
+The ```instruments``` table has ```id``` as it's unique primary key.
+The ```series``` table has ```instrument_id``` as a foreign key to the ```instruments``` table.
+The table schemas are -
 
-In the test case below, we are looking up Series data for 10 Instruments (by using the Instrument's symbol name, e.g., IBM).
-Each of the 10 Instruments has 64 Series records, for a total of 640 Series records.
+***The Instruments Table***
 
-By using preloading, each instrument is just fetched once, regardless of how many data points it has.
-I was able to reduce processing time in half.
-
-### *Without Preload*
-All 640 Series records are retrieved in one Load call.
-However, for each Series record retrieved, there is 1 Instrument Load call, making for total of 641 database calls.
-
-[NOTE: There is some optimization present -
-Ten of the 640 Instrument Load calls result in an actual database lookup while the remaining 630 Instrument Load calls are satisfied by Active Record's cache (denoted by the keyword CACHE in the console log), so no database call is performed.]
-
-Normally, if we were making SQL calls ourselves, instead of through Active Record, we would expect one Select statement to result in one database call.
-
-Here is the Active Record call without preloading -
-
+An instrument describes an equity trading on an exchange.
+The instrument has a symbol and an associated company name.
+For example, INTC & Intel Corporation.
 ```
-Series.joins(:intrument).where(instruments: {symbol: symbols}).distinct.order('instrument_id, time_interval, series_date')
-```
+> \d+ instruments
+Table "public.instruments"
+   Column   |            Type             |                        Modifiers                         |
+------------+-----------------------------+----------------------------------------------------------+
+ id         | bigint                      | not null default nextval('instruments_id_seq'::regclass) |
+ symbol     | character varying           | not null                                                 |
+ name       | character varying           | not null                                                 |
+ created_at | timestamp without time zone | not null                                                 |
+ updated_at | timestamp without time zone | not null                                                 |
+Indexes:
+ "instruments_pkey" PRIMARY KEY, btree (id)
+ "instruments_by_symbol" UNIQUE, btree (symbol)
+Referenced by:
+ TABLE "positions" CONSTRAINT "fk_rails_2adf75f9a8" FOREIGN KEY (instrument_id) REFERENCES instruments(id)
+ TABLE "series" CONSTRAINT "fk_rails_2bd701b643" FOREIGN KEY (instrument_id) REFERENCES instruments(id)
+ TABLE "trades" CONSTRAINT "fk_rails_c19f3a5dfc" FOREIGN KEY (instrument_id) REFERENCES instruments(id)
 
-And the resulting log file output -
+> select count(*) from instruments;
+8586
+```
+***The Series Table***
 
+The ```series``` table contains monthly price data points for an instrument.
+At this time, there are typically 64 data points in the ```series``` table for each instrument.
 ```
-Started GET "/api/monthly-series?symbols=AAPL,AMZN,COF,FBGX,HD,URTH,IWM,QQQ,DIA,SPY" for 127.0.0.1 at 2018-03-20 19:11:39 -0400
-Processing by SeriesController#monthly_series as JSON
-  Parameters: {"symbols"=>"AAPL,AMZN,COF,FBGX,HD,URTH,IWM,QQQ,DIA,SPY"}
-  [1m[36mSeries Load (9.1ms)[0m  [1m[34mSELECT DISTINCT "series".* FROM "series" INNER JOIN "instruments" ON "instruments"."id" = "series"."instrument_id" WHERE "instruments"."symbol" IN ('AAPL', 'AMZN', 'COF', 'FBGX', 'HD', 'URTH', 'IWM', 'QQQ', 'DIA', 'SPY') ORDER BY instrument_id, time_interval, series_date[0m
-[active_model_serializers]   [1m[36mInstrument Load (0.3ms)[0m  [1m[34mSELECT  "instruments".* FROM "instruments" WHERE "instruments"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
-[active_model_serializers]   [1m[36mCACHE Instrument Load (0.0ms)[0m  [1m[34mSELECT  "instruments".* FROM "instruments" WHERE "instruments"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
-[active_model_serializers]   [1m[36mCACHE Instrument Load (0.0ms)[0m  [1m[34mSELECT  "instruments".* FROM "instruments" WHERE "instruments"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
-  .
-  .
-  .
-[active_model_serializers]   [1m[36mInstrument Load (0.3ms)[0m  [1m[34mSELECT  "instruments".* FROM "instruments" WHERE "instruments"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
-[active_model_serializers]   [1m[36mCACHE Instrument Load (0.0ms)[0m  [1m[34mSELECT  "instruments".* FROM "instruments" WHERE "instruments"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
-[active_model_serializers]   [1m[36mCACHE Instrument Load (0.0ms)[0m  [1m[34mSELECT  "instruments".* FROM "instruments" WHERE "instruments"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
-[active_model_serializers]   [1m[36mCACHE Instrument Load (0.0ms)[0m  [1m[34mSELECT  "instruments".* FROM "instruments" WHERE "instruments"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
-  .
-  .
-  .
-[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::JsonApi (1253.71ms)
-Completed 200 OK in 1290ms (Views: 1261.4ms | ActiveRecord: 25.4ms)
-```
+> \d+ series
+Table "public.series"
+   Column             |            Type             |                        Modifiers                    |
+----------------------+-----------------------------+-----------------------------------------------------+
+ id                   | bigint                      | not null default nextval('series_id_seq'::regclass) |
+ instrument_id        | bigint                      | not null                                            |
+ time_interval        | character varying           | not null                                            |
+ series_date          | timestamp without time zone | not null                                            |
+ open_price           | numeric                     | not null                                            |
+ high_price           | numeric                     | not null                                            |
+ low_price            | numeric                     | not null                                            |
+ close_price          | numeric                     | not null                                            |
+ adjusted_close_price | numeric                     | not null                                            |
+ volume               | numeric                     | not null                                            |
+ dividend_amount      | numeric                     | not null                                            |
+ created_at           | timestamp without time zone | not null                                            |
+ updated_at           | timestamp without time zone | not null                                            |
+Indexes:
+ "series_pkey" PRIMARY KEY, btree (id)
+ "index_series_on_instrument_id_and_time_interval_and_series_date" UNIQUE, btree (instrument_id, time_interval, series_date)
+ "index_series_on_instrument_id" btree (instrument_id)
+Foreign-key constraints:
+ "fk_rails_2bd701b643" FOREIGN KEY (instrument_id) REFERENCES instruments(id)
 
-As you can see from the last line above, Rails reported the following run times:
-```
-  Completed 200 OK in 1122ms (Views: 1094.9ms | ActiveRecord: 21.3ms)
-```
-### *With Preload*
-The same query is made as above, except that ```.preload(:instrument)``` is appended to the Select statement.
+> select count(*) from series;
+406002
 
-ActiveRecord now makes just two queries; One for Series and one for Instruments.
-It then uses that data to create all the necessary objects without going back to the database.
+> select count(distinct instrument_id) from series;
+7984
+```
+#### *The Query*
+The query is looking for all instruments that do **not** have any data in the series table.
 
-Here is the ActiveRecord call with preloading -
+***The Original Query***
 
+This Active Record query -
 ```
-Series.joins(:intrument).where(instruments: {symbol: symbols}).distinct.order('instrument_id, time_interval, series_date').preload(:instrument)
+ Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id'))
+ ```
+produced this SQL -
 ```
+ SELECT "instruments"."id", "instruments"."symbol" FROM "instruments" WHERE ("instruments"."id" NOT IN (SELECT "series"."instrument_id" FROM "series"))
+```
+and this query plan -
+```
+QUERY PLAN
+-----------------------------------------------------------------------------
+ Seq Scan on instruments  (cost=0.00..62760584.18 rows=4293 width=12)
+   Filter: (NOT (SubPlan 1))
+   SubPlan 1
+     ->  Materialize  (cost=0.00..13624.63 rows=397842 width=8)
+           ->  Seq Scan on series  (cost=0.00..10080.42 rows=397842 width=8)
+```
+As you can see from the query plan, we are doing table scans on instruments and series.
+No use of indices is evident.
+This query was taking approximately 3 minutes to execute.
 
-And the resulting log file output -
+***The New Query***
 
-```
-Started GET "/api/monthly-series?symbols=AAPL,AMZN,COF,FBGX,HD,URTH,IWM,QQQ,DIA,SPY" for 127.0.0.1 at 2018-03-20 19:02:16 -0400
-Processing by SeriesController#monthly_series as JSON
-  Parameters: {"symbols"=>"AAPL,AMZN,COF,FBGX,HD,URTH,IWM,QQQ,DIA,SPY"}
-  [1m[36mSeries Load (6.6ms)[0m  [1m[34mSELECT DISTINCT "series".* FROM "series" INNER JOIN "instruments" ON "instruments"."id" = "series"."instrument_id" WHERE "instruments"."symbol" IN ('AAPL', 'AMZN', 'COF', 'FBGX', 'HD', 'URTH', 'IWM', 'QQQ', 'DIA', 'SPY') ORDER BY instrument_id, time_interval, series_date[0m
-  [1m[36mInstrument Load (0.4ms)[0m  [1m[34mSELECT "instruments".* FROM "instruments" WHERE "instruments"."id" IN (1, 2, 4, 5, 6, 10, 12, 14, 16, 17)[0m
-[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::JsonApi (548.4ms)
-Completed 200 OK in 598ms (Views: 587.6ms | ActiveRecord: 7.6ms)
-```
-From the last line above, Rails reported the following run times:
-```
-Completed 200 OK in 598ms (Views: 587.6ms | ActiveRecord: 7.6ms)
-```
-### *With Include and Eager_Load*
-There are two variation of preload - ```.include``` and ```.eager_load```.
-```
-Series.select('series.*').include(:instrument).where(instruments: {symbol: symbols}).distinct.order('instrument_id, time_interval, series_date')
+We have a unique instrument id index on the ```instruments``` table and a foreign key index on instrument_id in the ```series``` table, but they are not being used.
+I'm pretty sure that a smarter query analyzer would know that ```distinct``` is implied when you have a subselect with an IN clause.
+In this case, Postgres' query analyzer didn't seem to pick up on that.
+So I added the distinct keyword to the query.
 
-Series.select('series.*').eager_load(:instrument).where(instruments: {symbol: symbols}).distinct.order('instrument_id, time_interval, series_date')
+This Active Record query -
 ```
-In this case, they both generated the same queries - a single join on Series and Instrument.
+ Instrument.select(:id, :symbol).where.not(id: Series.select('instrument_id').distinct)
 ```
-Started GET "/api/monthly-series?symbols=AAPL,AMZN,COF,FBGX,HD,URTH,IWM,QQQ,DIA,SPY" for 127.0.0.1 at 2018-03-20 20:30:19 -0400
-Processing by SeriesController#monthly_series as JSON
-  Parameters: {"symbols"=>"AAPL,AMZN,COF,FBGX,HD,URTH,IWM,QQQ,DIA,SPY"}
-  [1m[35mSQL (11.6ms)[0m  [1m[34mSELECT DISTINCT series.*, "series"."id" AS t0_r0, "series"."instrument_id" AS t0_r1, "series"."time_interval" AS t0_r2, "series"."series_date" AS t0_r3, "series"."open_price" AS t0_r4, "series"."high_price" AS t0_r5, "series"."low_price" AS t0_r6, "series"."close_price" AS t0_r7, "series"."adjusted_close_price" AS t0_r8, "series"."volume" AS t0_r9, "series"."dividend_amount" AS t0_r10, "series"."created_at" AS t0_r11, "series"."updated_at" AS t0_r12, "instruments"."id" AS t1_r0, "instruments"."symbol" AS t1_r1, "instruments"."name" AS t1_r2, "instruments"."created_at" AS t1_r3, "instruments"."updated_at" AS t1_r4 FROM "series" LEFT OUTER JOIN "instruments" ON "instruments"."id" = "series"."instrument_id" WHERE "instruments"."symbol" IN ('AAPL', 'AMZN', 'COF', 'FBGX', 'HD', 'URTH', 'IWM', 'QQQ', 'DIA', 'SPY') ORDER BY instrument_id, time_interval, series_date[0m
-[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::JsonApi (479.51ms)
-Completed 200 OK in 552ms (Views: 536.1ms | ActiveRecord: 12.7ms)
+produced this SQL -
 ```
-with the following run times:
+ SELECT "instruments"."id", "instruments"."symbol" FROM "instruments" WHERE ("instruments"."id" NOT IN (SELECT DISTINCT "series"."instrument_id" FROM "series"))
 ```
-Completed 200 OK in 552ms (Views: 536.1ms | ActiveRecord: 12.7ms)
+and this query plan -
 ```
-
-In this case, the single join incurred slightly increased database processing time over the preload option.
-
-In some database installations, round-trip calls to the database are very expensive and are to be avoided whenever possible. That tends to make complicated SQL statements more desirable than multiple simpler ones.
-In this case, I'm using a local single-user Postgres database, so round-trip overhead wasn't a factor.
-It pays to experiment.
+QUERY PLAN
+-----------------------------------------------------------------------------
+ Seq Scan on instruments  (cost=11160.96..11369.29 rows=4293 width=12)
+   Filter: (NOT (hashed SubPlan 1))
+   SubPlan 1
+     ->  HashAggregate  (cost=11076.84..11144.14 rows=6730 width=8)
+           Group Key: series.instrument_id
+           ->  Seq Scan on series  (cost=0.00..10082.07 rows=397907 width=8)
+```
+As you can see from the query plan, we are now taking advantage of the ```series``` table instrument id index.
+This query is taking less than 1 second to execute.
 
 ### ***Conclusion***
-By using preload, we were able to cut overall response time in half.
-Database utilization was 1/3 of the non-preload time.
-This made the app more responsive.
+By using the distinct keyword, we were able to cut database response time from 3 minutes to 1 second.
+This was a substantial reduction in the load on the database.
 
-In a multiuser environment, in addition to improving your app's response time, reducing the load on the server and the database frees up resources that can be used to satisfy requests from other users faster.
+In a multiuser environment, in addition to improving your app's response time, reducing the load on the database frees up resources that can be used to satisfy requests from other users faster.
 
