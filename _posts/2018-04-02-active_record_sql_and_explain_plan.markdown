@@ -11,29 +11,30 @@ I have an app that retrieves 640 data points from a Postgres database with a two
 The join was taking about 3 minutes to return results, so I decided to see if that could be improved.
 I examined the query plans and added a ```distinct``` clause to the query.
 This dropped the query response time from 3 minutes to less than 1 second.
-Active Record's [.explain](http://guides.rubyonrails.org/active_record_querying.html#running-explain) function is an excellent resource to help tune SQL performance.
-Explain will display your query's query execution plan.
+Active Record's [.explain](http://guides.rubyonrails.org/active_record_querying.html#running-explain) method is an excellent resource to help tune SQL performance.
+Explain will display your query's execution plan.
 From there, you can tell whether or not the query is behaving as you expect.
-For instance, whether the query is taking advantage of available indexes.
+For instance, whether or not the query is taking advantage of available indexes.
 
 Sometimes, when the query does not appear to be optimal, there is a good reason for it.
-E.g., if using an index would take longer than just scanning the table.
+For example, if the query optimizer determines that a table scan will be quicker than using an index, it will perform a table scan instead of navigating the index.
 Other times, the query execution is not recognizing factors that would improve performance.
+Some RDBMS's, such as Oracle, allow you impact the query plan by updating table statistics or to overide the plan using hints.
+For PostgreSQL databases, it is recommended that ANALYZE be run periodically to keep statistics up to date.
 
 Since Explain Plan is not a SQL standard, each database vendor has there own syntax for calling it.
-It appears that Active Record is able to convert the ```.explain``` call on your query to the explain plan syntax required by your particular database's vendor.
+It appears that Active Record is able to convert the ```.explain``` call on your query to the explain plan syntax required by your particular database.
 
 #### *The Data*
 The two tables are ```series``` and ```instruments```.
-The ```instruments``` table has ```id``` as it's unique primary key.
-The ```series``` table has ```instrument_id``` as a foreign key to the ```instruments``` table.
-The table schemas are -
+Each instument has a unique id.
+Each series data point has an instrument_id that identifies the instrument it belongs to.
 
 ***The Instruments Table***
 
 An instrument describes an equity trading on an exchange.
 The instrument has a symbol and an associated company name.
-For example, INTC & Intel Corporation.
+For example, 'INTC', 'Intel Corporation'.
 ```
 > \d+ instruments
 Table "public.instruments"
@@ -48,9 +49,7 @@ Indexes:
  "instruments_pkey" PRIMARY KEY, btree (id)
  "instruments_by_symbol" UNIQUE, btree (symbol)
 Referenced by:
- TABLE "positions" CONSTRAINT "fk_rails_2adf75f9a8" FOREIGN KEY (instrument_id) REFERENCES instruments(id)
  TABLE "series" CONSTRAINT "fk_rails_2bd701b643" FOREIGN KEY (instrument_id) REFERENCES instruments(id)
- TABLE "trades" CONSTRAINT "fk_rails_c19f3a5dfc" FOREIGN KEY (instrument_id) REFERENCES instruments(id)
 
 > select count(*) from instruments;
 8586
@@ -91,7 +90,7 @@ Foreign-key constraints:
 7984
 ```
 #### *The Query*
-The query is looking for all instruments that do **not** have any data in the series table.
+The query is looking for instruments that do **not** have any data in the series table.
 
 ***The Original Query***
 
