@@ -29,7 +29,7 @@ Code Climate requires a special configuration to be able to consolidate code cov
 For now, Travis config just forwards the Ruby coverage data to Code Climate for reporting.
 Getting a consolidated coverage report will be the topic of a future post.
 
-#### *.travis.yml*
+### *.travis.yml*
 
 RSpec is able to run what it needs to test Ruby code.
 To test front-end functionality (with a browser), you need to have a web server running.
