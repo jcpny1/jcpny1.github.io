@@ -18,7 +18,7 @@ Through a lot of trial and error, I was able to get features tests working local
 There's a lot of information on the web about Travis configurations. Much of it is out of date, and the rest doesn't pertain to this situation. So I'll document what I found worked for me here 
 
 
-Along the way, I realized that it's really not the pervue of an API-only backend to know about the front end enough to create and run feature tests.
+Along the way, I realized that it's really not the perview of an API-only backend to know about the front end enough to create and run feature tests.
 So, I wound up going to Jest for front end testing after all.
 However, the difficulty in getting a browser running in Travis should be the same regardless of your front-end language.
 
