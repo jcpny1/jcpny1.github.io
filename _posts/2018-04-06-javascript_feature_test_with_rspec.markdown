@@ -5,23 +5,18 @@ date:       2018-04-06 11:35:26 -0400
 permalink:  javascript_feature_test_with_rspec
 ---
 
->This is a work in progress.
-
 ### *Introduction*
 
 The application is a Rails API backend with a Javascript frontend, in a single GitHub repository.
 All the Rails testing for models and controllers is done with RSpec.
 For expediency, I thought I'd try RSpec to perform feature tests on the javascript frontend rather than add a second testing framework.
 
-
 Through a lot of trial and error, I was able to get features tests working locally, but had quite a bit of trouble getting them to work remotely on Travis CI.
 There's a lot of information on the web about Travis configurations. Much of it is out of date, and the rest doesn't pertain to this situation. So I'll document what I found worked for me here 
-
 
 Along the way, I realized that it's really not the perview of an API-only backend to know about the front end enough to create and run feature tests.
 So, I wound up going to Jest for front end testing after all.
 However, the difficulty in getting a browser running in Travis should be the same regardless of your front-end language.
-
 
 I use Code Climate to measure test code coverage.
 When Travis finishes testing a build, it forwards code coverage data to Code Climate.
@@ -34,8 +29,7 @@ Getting a consolidated coverage report will be the topic of a future post.
 RSpec is able to run what it needs to test Ruby code.
 To test front-end functionality (with a browser), you need to have a web server running.
 Locally, I was able to do an `npm start` before running RSpec so the feature test would have something with which to handle URL requests.
-On Travis, the Travis config file must perform this task.
-
+With Travis CI, the Travis config file must perform this task.
 
 ```
 env:
@@ -79,3 +73,4 @@ after_script:
 ```
 ### ***Conclusion***
 
+Through trial and error, I was able to come up with a `.travis.conf` file that provided feature testing when the front-end code is using Javascript.
