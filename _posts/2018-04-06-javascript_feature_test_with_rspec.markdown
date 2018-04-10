@@ -73,6 +73,6 @@ after_script:
 ```
 ### ***Conclusion***
 
-Through trial and error, I was able to come up with a `.travis.conf` file that provided feature testing when the front-end code is using Javascript.
+Through trial and error, I was able to come up with a `.travis.yml` file that provided feature testing when the front-end code is using Javascript.
 Combing the test results from RSpec and from Jest into a consolidated Code Climate report requires additional changes to the Travis config file.
 These changes will be covered in a future post.
