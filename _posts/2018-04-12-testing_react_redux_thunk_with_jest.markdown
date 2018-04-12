@@ -5,7 +5,6 @@ date:       2018-04-12 13:28:00 -0400
 permalink:  testing_react_redux_thunk_with_jest
 ---
 
-### *Introduction*
 In my portfolio-analyzer repository, containing a Rails API back end and a JavaScript front end, all of the Rails testing is done with RSpec.
 There is one feature test that starts a headless browser and exercises one part of the JavaScript front end.
 RSpec testing is as simple as navigating to a page and issuing the command 'click'.
