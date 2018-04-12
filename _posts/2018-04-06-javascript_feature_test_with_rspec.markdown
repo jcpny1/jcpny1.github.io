@@ -6,7 +6,6 @@ permalink:  javascript_feature_test_with_rspec
 ---
 
 ### *Introduction*
-
 The application is a Rails API backend with a Javascript frontend, in a single GitHub repository.
 All the Rails testing for models and controllers is done with RSpec.
 For expediency, I thought I'd try RSpec to perform feature tests on the javascript frontend rather than add a second testing framework.
@@ -25,7 +24,6 @@ For now, Travis config just forwards the Ruby coverage data to Code Climate for 
 Getting a consolidated coverage report will be the topic of a future post.
 
 ### *.travis.yml*
-
 RSpec is able to run what it needs to test Ruby code.
 To test front-end functionality (with a browser), you need to have a web server running.
 Locally, I was able to do an `npm start` before running RSpec so the feature test would have something with which to handle URL requests.
@@ -72,7 +70,6 @@ after_script:
   - ../cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 ```
 ### ***Conclusion***
-
 Through trial and error, I was able to come up with a `.travis.yml` file that provided feature testing when the front-end code is using Javascript.
 Combining the test results from RSpec and from Jest into a consolidated Code Climate report requires additional changes to the Travis config file.
 These changes will be covered in a future post.
