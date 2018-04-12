@@ -5,7 +5,6 @@ date:       2018-04-06 11:35:26 -0400
 permalink:  javascript_feature_test_with_rspec
 ---
 
-### *Introduction*
 The application is a Rails API backend with a Javascript frontend, in a single GitHub repository.
 All the Rails testing for models and controllers is done with RSpec.
 For expediency, I thought I'd try RSpec to perform feature tests on the javascript frontend rather than add a second testing framework.
