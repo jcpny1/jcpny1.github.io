@@ -5,8 +5,6 @@ date:       2018-03-20 22:14:05 -0400
 permalink:  active_record_preload
 ---
 
-
-### *Introduction*
 I have an app that retrieves 640 data points from a database (from the Series table) that are then rendered to JSON and sent to the client to be plotted on a chart.
 
 Active Record assembles an object from one or more database records.
