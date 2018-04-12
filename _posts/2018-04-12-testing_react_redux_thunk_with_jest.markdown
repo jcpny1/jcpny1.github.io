@@ -6,7 +6,7 @@ permalink:  testing_react_redux_thunk_with_jest
 ---
 
 In my portfolio-analyzer repository, containing a Rails API back end and a JavaScript front end, all of the Rails testing is done with RSpec.
-RSpec testing is as simple as navigating to a page and issuing the command 'click'.
+With a small amount of setup, RSpec testing is as simple as navigating to a page and issuing the command 'click'.
 It is incredibly readable.
 ```
       visit 'http://localhost:3000'
