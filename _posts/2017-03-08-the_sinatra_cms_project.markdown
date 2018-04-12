@@ -1,10 +1,11 @@
 ---
 layout: post
-title:  "The Sinatra CMS Project"
-date:   2017-03-08 18:56:54 +0000
+title:      "The Sinatra CMS Project"
+date:       2017-03-08 13:56:54 -0500
+permalink:  the_sinatra_cms_project
 ---
 
-This is the first comprehensive Sinatra coding project of the bootcamp. It brings together Ruby, Sinatra, ActiveRecord, and a little HTML. The assignment is to design and implement a basic CRUD application. It needs to include a one-to-many relationship between two of the data models.
+This is the first comprehensive Sinatra coding project. It brings together Ruby, Sinatra, ActiveRecord, and a little HTML. The assignment is to design and implement a basic CRUD application. It needs to include a one-to-many relationship between two of the data models.
 
 Once I picked a domain and created a rough design (modeling merchandise purchases), the database setup was complete in short order. I created some seed data so I'd have some data to work with quickly while setting up views and routes. Where things started to get bogged down, was when I decided to spruce up the html a bit. That's a process that I find seems to have no end - You eventually have to stop fiddling with the code and convince yourself that good enough is good enough!
 
@@ -13,4 +14,3 @@ Besides the html editing, I seemd to have run across a glitch in Sinatra. A rout
 Another thing that surprised me, was how vulnerable to hacking protected data could be by what would seem to be things easy to overlook, such as forgetting to check, at every route, that the user is logged in and that the user is authorized to view the data being requested.
 
 I found tux and pry to be indispensable during development. Tux to review the proper data model setups, and pry to check on parameter formats being passed back from the html forms.
-
