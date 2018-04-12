@@ -6,11 +6,9 @@ permalink:  testing_react_redux_thunk_with_jest
 ---
 
 ### *Introduction*
-
-The application is a Rails API back end with a JavaScript front end, in a single GitHub repository.
-All the Rails testing is done with RSpec.
-Some feature tests will start a headless browser and exercise the JavaScript front end.
-Using RSpec, other than providing mock JSON responses for third-party API's, the testing was a simple as navigating to a page and issuing the command 'click'.
+In my portfolio-analyzer repository, containing a Rails API back end and a JavaScript front end, all of the Rails testing is done with RSpec.
+There is one feature test that starts a headless browser and exercises one part of the JavaScript front end.
+RSpec testing is as simple as navigating to a page and issuing the command 'click'.
 It is incredibly readable.
 ```
       visit 'http://localhost:3000'
@@ -30,7 +28,6 @@ From what I could find on the internet, these workarounds create a lot of overhe
 As I wade through the issues faced, I'll update this post to show the methods I found to be most useful.
 
 ### *First Pass*
-
 My first pass at Jest testing was to
 1. render each page of the app,
 2. test that all actions and corresponding reducer logic exists.
