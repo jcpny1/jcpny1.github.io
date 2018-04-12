@@ -5,7 +5,6 @@ date:       2018-03-16 18:54:53 -0400
 permalink:  active_model_serializers_and_json_sideloading
 ---
 
-### *Introduction*
 Depending on the application, JSON data transfers can be costly in terms of response time and data size.
 When your data model has nested associations, each association gets fully converted into JSON.
 This can lead to a lot of duplicated data being serialized and transmitted.
