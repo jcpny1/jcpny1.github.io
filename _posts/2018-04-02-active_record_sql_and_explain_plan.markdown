@@ -5,8 +5,6 @@ date:       2018-04-02 07:57:56 -0400
 permalink:  active_record_sql_and_explain_plan
 ---
 
-
-### *Introduction*
 I have an app that retrieves 640 data points from a Postgres database with a two-table join.
 The join was taking about 3 minutes to return results, so I decided to see if that could be improved.
 I examined the query plans and added a ```distinct``` clause to the query.
