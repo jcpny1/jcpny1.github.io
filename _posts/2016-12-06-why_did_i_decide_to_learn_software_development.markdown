@@ -5,7 +5,6 @@ date:       2016-12-06 17:34:05 -0500
 permalink:  why_did_i_decide_to_learn_software_development
 ---
 
-
 I was an undergraduate in college studying aerospace engineering.
 I found that it wasn't for me, but didn't know what would spark my passion.
 After dabbling in different areas, I took an Introduction to Computer Science class and was immediately hooked.
