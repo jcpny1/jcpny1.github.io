@@ -15,7 +15,7 @@ It is incredibly readable.
       click_button 'Submit'
       expect(page).to have_text('<do-not-use>')
 ```
-There is one feature test that starts a headless browser and exercises one part of the JavaScript front end.
+There is one feature test that starts a headless browser and exercises a part of the JavaScript front end.
 Unfortunately, RSpec only instruments Ruby code.
 There is no code coverage information for the JavaScript code.
 
